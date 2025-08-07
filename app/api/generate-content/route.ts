@@ -127,7 +127,7 @@ export async function POST(request: NextRequest) {
       },
       warnings: usageWarnings.hasWarnings ? usageWarnings.warnings : undefined
     })
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Error generating content:', error)
     
     // Check for specific API errors

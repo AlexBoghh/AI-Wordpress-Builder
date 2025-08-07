@@ -46,8 +46,8 @@ interface Page {
 interface StepTwoWireframeGeneratorProps {
   pages: Page[]
   pageContents: Record<string, string>
-  pageWireframes: Record<string, any>
-  setPageWireframes: (wireframes: Record<string, any>) => void
+  pageWireframes: Record<string, Record<string, unknown>>
+  setPageWireframes: (wireframes: Record<string, Record<string, unknown>>) => void
 }
 
 // Widget library with categories

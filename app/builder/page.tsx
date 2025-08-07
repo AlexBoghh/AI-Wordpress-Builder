@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { StepIndicator } from '@/components/ui/step-indicator'
@@ -31,7 +30,7 @@ interface Page {
   contentType: 'page' | 'post' | 'product' | 'portfolio'
   priority: string
   content?: string
-  wireframe?: any // Elementor wireframe data
+  wireframe?: Record<string, unknown> // Elementor wireframe data
 }
 
 const STEPS = [
@@ -56,12 +55,11 @@ const STEPS = [
 ]
 
 export default function NewBuilderPage() {
-  const router = useRouter()
   const [currentStep, setCurrentStep] = useState(1)
   const [projectName, setProjectName] = useState(`Website ${new Date().toLocaleDateString()}`)
   const [pages, setPages] = useState<Page[]>([])
   const [pageContents, setPageContents] = useState<Record<string, string>>({})
-  const [pageWireframes, setPageWireframes] = useState<Record<string, any>>({})
+  const [pageWireframes, setPageWireframes] = useState<Record<string, Record<string, unknown>>>({})
   const [projectId, setProjectId] = useState<string | null>(null)
   const [isSaving, setIsSaving] = useState(false)
   

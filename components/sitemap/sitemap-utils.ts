@@ -51,7 +51,7 @@ export function pagesToSitemapNodes(
     return acc
   }, {} as Record<string, Page[]>)
   
-  let yOffset = 0
+  const yOffset = 0
   const MENU_SPACING = 300
   const PAGE_SPACING_X = 250
   const PAGE_SPACING_Y = 100
