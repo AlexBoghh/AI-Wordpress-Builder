@@ -4,11 +4,12 @@ import { prisma } from '@/lib/prisma'
 // GET /api/layouts/[id] - Get a specific layout
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const layout = await prisma.layout.findUnique({
-      where: { id: params.id },
+      where: { id },
       include: { project: true }
     })
 
@@ -39,15 +40,16 @@ export async function GET(
 // PUT /api/layouts/[id] - Update a layout
 export async function PUT(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const body = await request.json()
     const { name, description, sections, settings } = body
 
     // Check if layout exists
     const existingLayout = await prisma.layout.findUnique({
-      where: { id: params.id }
+      where: { id }
     })
 
     if (!existingLayout) {
@@ -59,7 +61,7 @@ export async function PUT(
 
     // Update layout
     const updatedLayout = await prisma.layout.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         ...(name !== undefined && { name }),
         ...(description !== undefined && { description }),
@@ -89,12 +91,13 @@ export async function PUT(
 // DELETE /api/layouts/[id] - Delete a layout
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     // Check if layout exists
     const existingLayout = await prisma.layout.findUnique({
-      where: { id: params.id }
+      where: { id }
     })
 
     if (!existingLayout) {
@@ -106,7 +109,7 @@ export async function DELETE(
 
     // Delete layout
     await prisma.layout.delete({
-      where: { id: params.id }
+      where: { id }
     })
 
     return NextResponse.json(
