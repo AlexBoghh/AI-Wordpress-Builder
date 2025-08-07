@@ -161,8 +161,8 @@ export function getOptimalClaudeModel(contentLength: 'short' | 'medium' | 'long'
   }
 }
 
-export function estimateContentLength(pageData: any): 'short' | 'medium' | 'long' {
-  const { title, metaDescription, keywords, contentType } = pageData
+export function estimateContentLength(pageData: { contentType?: string; metaDescription?: string; keywords?: string }): 'short' | 'medium' | 'long' {
+  const { metaDescription, keywords, contentType } = pageData
   
   // Estimate based on content type and metadata
   if (contentType === 'product' && metaDescription && metaDescription.length > 100) {

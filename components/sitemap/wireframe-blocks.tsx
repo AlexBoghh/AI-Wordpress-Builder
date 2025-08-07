@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils'
 interface WireframeBlockProps {
   type: string
   content?: string
-  attributes?: Record<string, any>
+  attributes?: Record<string, unknown>
   className?: string
 }
 

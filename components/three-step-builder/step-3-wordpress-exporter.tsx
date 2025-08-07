@@ -3,12 +3,11 @@
 import React, { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
-import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import { Checkbox } from '@/components/ui/checkbox'
 import { 
-  Download, FileCode, FileText, Package, CheckCircle2, 
-  AlertCircle, Loader2, FolderOpen, Code2, Zap
+  Download, Package, CheckCircle2, 
+  AlertCircle, Loader2, Zap
 } from 'lucide-react'
 import { toast } from 'sonner'
 import { generateWordPressXML } from '@/lib/wordpress-export'
@@ -29,7 +28,7 @@ interface Page {
 interface StepThreeWordPressExporterProps {
   pages: Page[]
   pageContents: Record<string, string>
-  pageWireframes: Record<string, any>
+  pageWireframes: Record<string, Record<string, unknown>>
   projectName: string
 }
 
@@ -63,11 +62,11 @@ export function StepThreeWordPressExporter({
   const isReady = pages.length > 0 && pagesWithContent > 0
 
   // Generate Elementor JSON from wireframes
-  const generateElementorJSON = (pageId: string, wireframe: any) => {
+  const generateElementorJSON = (pageId: string, wireframe: Record<string, unknown>) => {
     // Convert our wireframe format to Elementor's JSON structure
-    const convertToElementor = (blocks: any[]): any[] => {
+    const convertToElementor = (blocks: Array<Record<string, unknown>>): Array<Record<string, unknown>> => {
       return blocks.map(block => {
-        const elementorElement: any = {
+        const elementorElement: Record<string, unknown> = {
           id: block.id,
           elType: block.type === 'section' ? 'section' : block.type === 'column' ? 'column' : 'widget',
           settings: block.settings || {},

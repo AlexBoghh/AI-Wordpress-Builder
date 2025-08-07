@@ -14,7 +14,7 @@ export interface ContentBlock {
   type: 'header' | 'text' | 'image' | 'gallery' | 'testimonial' | 'stats' | 'contact' | 'form' | 'custom'
   title: string
   content: string
-  settings?: Record<string, any>
+  settings?: Record<string, unknown>
 }
 
 // Content block icon mapping

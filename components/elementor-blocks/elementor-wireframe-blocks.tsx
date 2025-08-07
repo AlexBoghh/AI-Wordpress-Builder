@@ -1,9 +1,9 @@
 import React from 'react'
 import { cn } from '@/lib/utils'
 import { 
-  Type, FileText, Image, MousePointer, Minus, List, 
-  Quote, Grid, MessageSquare, Star, Play, MapPin,
-  Phone, Mail, Clock, Facebook, Twitter, Instagram,
+  Type, Image, MousePointer, 
+  Star, Play, MapPin,
+  Facebook, Twitter, Instagram,
   Menu, ChevronRight
 } from 'lucide-react'
 
@@ -30,7 +30,7 @@ export type ElementorBlockType =
 export interface ElementorBlock {
   id: string
   type: ElementorBlockType
-  settings?: any
+  settings?: Record<string, unknown>
   elements?: ElementorBlock[] // For sections/columns containing other elements
 }
 

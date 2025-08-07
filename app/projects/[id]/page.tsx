@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import { useParams } from 'next/navigation'
 import Link from 'next/link'
 import { Project, Page } from '@/types'
@@ -14,11 +14,7 @@ export default function ProjectPage() {
   const [selectedPage, setSelectedPage] = useState<Page | null>(null)
   const [generatingContent, setGeneratingContent] = useState<string | null>(null)
 
-  useEffect(() => {
-    fetchProject()
-  }, [params.id])
-
-  const fetchProject = async () => {
+  const fetchProject = useCallback(async () => {
     try {
       const response = await fetch(`/api/projects/${params.id}`)
       if (!response.ok) throw new Error('Failed to fetch project')
@@ -32,7 +28,11 @@ export default function ProjectPage() {
     } finally {
       setLoading(false)
     }
-  }
+  }, [params.id])
+
+  useEffect(() => {
+    fetchProject()
+  }, [fetchProject])
 
   const handleGenerateContent = async (pageId: string) => {
     const page = project?.pages.find(p => p.id === pageId)

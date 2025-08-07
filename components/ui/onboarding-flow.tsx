@@ -91,7 +91,7 @@ export function OnboardingFlow({
           <div>
             <h2 className="text-xl font-semibold">Welcome to Website Builder</h2>
             <p className="text-sm text-muted-foreground mt-1">
-              Let's get you started with building your website
+              Let&apos;s get you started with building your website
             </p>
           </div>
           

@@ -1,17 +1,15 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { FileUpload } from '@/components/file-upload'
 import { Button } from '@/components/ui/button'
 import { Container, Section } from '@/components/ui/container'
 import { Heading, Text } from '@/components/ui/typography'
-import { Stack, HStack, VStack } from '@/components/ui/stack'
+import { HStack, VStack } from '@/components/ui/stack'
 import { FileText, Layout, Download, Sparkles, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
-import { cn } from '@/lib/utils'
 
 export default function Home() {
-  const [hasData, setHasData] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
   const handleDataLoaded = async (data: Record<string, string>[]) => {

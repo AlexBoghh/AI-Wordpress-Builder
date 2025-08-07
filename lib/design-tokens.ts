@@ -264,7 +264,7 @@ export const layout = {
 // Utility function to get design tokens
 export function getDesignToken(path: string): string | object {
   const pathArray = path.split('.')
-  let current: any = { spacing, typography, elevation, borderRadius, animation, zIndex, components, semanticColors, layout }
+  let current: Record<string, unknown> = { spacing, typography, elevation, borderRadius, animation, zIndex, components, semanticColors, layout }
   
   for (const key of pathArray) {
     if (current[key] === undefined) {
