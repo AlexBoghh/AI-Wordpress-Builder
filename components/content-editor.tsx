@@ -5,10 +5,6 @@ import { Button } from './ui/button'
 import { Textarea } from './ui/textarea'
 import { Card } from './ui/card'
 import { Edit2, Save, X, Eye, Code } from 'lucide-react'
-import { cn } from '@/lib/utils'
-import { BlockToolbar } from './block-toolbar'
-import { LayoutSelector, LayoutType } from './layout-selector'
-import { LayoutRenderer } from './layout-renderer'
 
 interface ContentEditorProps {
   content: string
@@ -20,7 +16,7 @@ export function ContentEditor({ content, onSave, pageTitle }: ContentEditorProps
   const [isEditing, setIsEditing] = useState(false)
   const [editedContent, setEditedContent] = useState(content)
   const [viewMode, setViewMode] = useState<'preview' | 'html'>('preview')
-  const [selectedLayout, setSelectedLayout] = useState<LayoutType>('standard')
+  // const [selectedLayout, setSelectedLayout] = useState<LayoutType>('standard')
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   useEffect(() => {
@@ -199,12 +195,6 @@ export function ContentEditor({ content, onSave, pageTitle }: ContentEditorProps
                   <Code className="h-3 w-3" />
                 </Button>
               </div>
-              {viewMode === 'preview' && (
-                <LayoutSelector
-                  selectedLayout={selectedLayout}
-                  onLayoutChange={setSelectedLayout}
-                />
-              )}
             </div>
           )}
         </div>
@@ -234,7 +224,7 @@ export function ContentEditor({ content, onSave, pageTitle }: ContentEditorProps
       <div className="flex-1 overflow-y-auto">
         {isEditing ? (
           <div className="flex flex-col h-full">
-            <BlockToolbar onBlockInsert={insertBlock} />
+            {/* <BlockToolbar onBlockInsert={insertBlock} /> */}
             <div className="p-4 flex-1">
               <Textarea
                 ref={textareaRef}
@@ -251,11 +241,7 @@ export function ContentEditor({ content, onSave, pageTitle }: ContentEditorProps
         ) : (
           <div className="p-6">
             {viewMode === 'preview' ? (
-              <LayoutRenderer
-                content={content}
-                pageTitle={pageTitle}
-                layout={selectedLayout}
-              />
+              <div dangerouslySetInnerHTML={{ __html: renderContent(content) }} />
             ) : (
               <Card className="p-4 bg-gray-50">
                 <pre className="text-xs overflow-x-auto whitespace-pre-wrap font-mono">

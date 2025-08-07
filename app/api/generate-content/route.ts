@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Check usage warnings before proceeding (with error handling)
-    let usageWarnings = { hasWarnings: false, warnings: [] }
+    let usageWarnings: { hasWarnings: boolean; warnings: string[] } = { hasWarnings: false, warnings: [] }
     try {
       usageWarnings = await checkUsageWarnings()
       if (usageWarnings.hasWarnings) {
