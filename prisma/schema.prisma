@@ -1,0 +1,70 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Project {
+  id        String   @id @default(cuid())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  pages     Page[]
+  layouts   Layout[]
+}
+
+model Page {
+  id              String  @id @default(cuid())
+  title           String
+  slug            String
+  menu            String?
+  submenu         String?
+  metaDescription String?
+  keywords        String?
+  contentType     String  @default("page")
+  priority        String  @default("medium")
+  content         String?
+  projectId       String
+  project         Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  @@index([projectId])
+  @@index([slug])
+}
+
+model Layout {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  sections    Json     // Store sections as JSON
+  settings    Json     // Store settings as JSON
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([projectId])
+}
+
+model ApiUsage {
+  id            String   @id @default(cuid())
+  provider      String   // "claude", "gemini", etc.
+  model         String   // "claude-3-5-sonnet-20241022", etc.
+  inputTokens   Int
+  outputTokens  Int
+  totalTokens   Int
+  estimatedCost Float    // Cost in USD
+  pageTitle     String?  // What content was generated for
+  projectId     String?
+  createdAt     DateTime @default(now())
+  
+  @@index([provider])
+  @@index([createdAt])
+}

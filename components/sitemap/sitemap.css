@@ -1,0 +1,40 @@
+/* Custom scrollbar for content blocks */
+.sitemap-node-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sitemap-node-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sitemap-node-content::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.dark .sitemap-node-content::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Smooth expansion animation */
+.node-expansion {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Content block hover effects */
+.content-block-item {
+  transition: all 0.2s ease;
+}
+
+.content-block-item:hover {
+  transform: translateX(2px);
+}
+
+/* Block type indicators */
+.block-type-indicator {
+  transition: transform 0.2s ease;
+}
+
+.block-type-indicator:hover {
+  transform: scale(1.1);
+}
