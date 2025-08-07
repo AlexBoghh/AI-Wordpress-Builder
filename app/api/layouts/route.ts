@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import type { Layout } from '@/types/layout-builder'
 
 // GET /api/layouts - Get all layouts for a project
 export async function GET(request: Request) {

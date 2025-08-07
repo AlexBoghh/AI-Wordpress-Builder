@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     console.log('Request body received:', JSON.stringify(body, null, 2))
     
-    const { pageData, generationType, brandVoice, customPrompt, businessSettings } = body as GenerateContentRequest & { brandVoice?: BrandVoice, customPrompt?: string, businessSettings?: BusinessSettings }
+    const { pageData, brandVoice, customPrompt, businessSettings } = body as GenerateContentRequest & { brandVoice?: BrandVoice, customPrompt?: string, businessSettings?: BusinessSettings }
 
     console.log('Claude API Key exists:', !!process.env.ANTHROPIC_API_KEY)
     console.log('Page data:', pageData)
@@ -67,7 +67,7 @@ export async function POST(request: NextRequest) {
       console.warn('Failed to optimize model selection, using default:', modelError)
     }
 
-    const prompt = customPrompt ? generateCustomPrompt(pageData, customPrompt, brandVoice, businessSettings) : generatePrompt(pageData, brandVoice, businessSettings)
+    const prompt = customPrompt ? generateCustomPrompt(pageData, customPrompt, brandVoice) : generatePrompt(pageData, brandVoice)
     
     console.log('Attempting to generate content with Claude, prompt length:', prompt.length)
     
@@ -164,7 +164,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-function generatePrompt(pageData: GenerateContentRequest['pageData'], brandVoice?: BrandVoice, businessSettings?: BusinessSettings): string {
+function generatePrompt(pageData: GenerateContentRequest['pageData'], brandVoice?: BrandVoice): string {
   const { title, metaDescription, keywords, contentType, businessType } = pageData
 
   let prompt = ''
@@ -441,16 +441,6 @@ function createSeparatorBlock(): string {
 <!-- /wp:separator -->`
 }
 
-function createColumnsBlock(columns: Array<{content: string}>): string {
-  const columnBlocks = columns.map(col => `<!-- wp:column -->
-<div class="wp-block-column">${col.content}</div>
-<!-- /wp:column -->`).join('\n')
-  
-  return `<!-- wp:columns -->
-<div class="wp-block-columns">${columnBlocks}</div>
-<!-- /wp:columns -->`
-}
-
 function createQuoteBlock(text: string, citation?: string): string {
   const cite = citation ? `<cite>${escapeHtml(citation)}</cite>` : ''
   return `<!-- wp:quote -->
@@ -461,42 +451,8 @@ ${cite}
 <!-- /wp:quote -->`
 }
 
-function createTableBlock(headers: string[], rows: string[][]): string {
-  const headerCells = headers.map(h => `<th>${escapeHtml(h)}</th>`).join('')
-  const bodyRows = rows.map(row => 
-    `<tr>${row.map(cell => `<td>${escapeHtml(cell)}</td>`).join('')}</tr>`
-  ).join('')
-  
-  return `<!-- wp:table -->
-<figure class="wp-block-table">
-<table>
-<thead>
-<tr>${headerCells}</tr>
-</thead>
-<tbody>
-${bodyRows}
-</tbody>
-</table>
-</figure>
-<!-- /wp:table -->`
-}
-
-function createGalleryBlock(images: Array<{url: string, alt: string}>): string {
-  const imageBlocks = images.map(img => `<!-- wp:image -->
-<figure class="wp-block-image">
-<img src="${img.url}" alt="${escapeHtml(img.alt)}"/>
-</figure>
-<!-- /wp:image -->`).join('\n')
-  
-  return `<!-- wp:gallery {"columns":3,"linkTo":"none"} -->
-<figure class="wp-block-gallery has-nested-images columns-3 is-cropped">
-${imageBlocks}
-</figure>
-<!-- /wp:gallery -->`
-}
-
-function generateCustomPrompt(pageData: GenerateContentRequest['pageData'], customPrompt: string, brandVoice?: BrandVoice, businessSettings?: BusinessSettings): string {
-  const { title, metaDescription, keywords, contentType, businessType } = pageData
+function generateCustomPrompt(pageData: GenerateContentRequest['pageData'], customPrompt: string, brandVoice?: BrandVoice): string {
+  const { title, metaDescription, keywords, businessType } = pageData
   
   // Replace placeholders in custom prompt
   let prompt = customPrompt

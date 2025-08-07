@@ -1,13 +1,12 @@
 "use client"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { StepIndicator } from '@/components/ui/step-indicator'
 import { BuilderHeader } from '@/components/ui/page-header'
 import { toast } from 'sonner'
 import { ArrowLeft, ArrowRight, Download, Map, Layout, FileDown } from 'lucide-react'
-import { cn } from '@/lib/utils'
 
 // Import step components (to be created)
 import { StepOneSitemapContent } from '@/components/three-step-builder/step-1-sitemap-content'
@@ -153,7 +152,7 @@ export default function NewBuilderPage() {
   }
 
   // Save project to database
-  const saveProject = async () => {
+  const saveProject = useCallback(async () => {
     if (pages.length === 0) return null
     
     setIsSaving(true)
@@ -197,7 +196,7 @@ export default function NewBuilderPage() {
     } finally {
       setIsSaving(false)
     }
-  }
+  }, [pages, projectName, pageContents, pageWireframes, projectId])
 
   // Auto-save when data changes
   useEffect(() => {
@@ -208,7 +207,7 @@ export default function NewBuilderPage() {
       
       return () => clearTimeout(timeoutId)
     }
-  }, [pages, projectName, pageContents, pageWireframes])
+  }, [pages, projectName, pageContents, pageWireframes, saveProject])
 
   return (
     <div className="min-h-screen bg-background">
